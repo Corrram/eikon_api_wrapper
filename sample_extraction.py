@@ -9,9 +9,9 @@ german_companies = get_companies_from("DE")
 german_isins = list(german_companies.ISIN)
 
 start_date = "2019-01-01"
-#get_stock_returns(sp500_isins, start_date, "D")
-#get_market_cap_data(sp500_isins, start_date)
-#get_climate_indicators(sp500_isins, start_date)
+get_stock_returns(sp500_isins, start_date, "D")
+get_market_cap_data(sp500_isins, start_date)
+get_climate_indicators(sp500_isins, start_date)
 
 get_business_sectors(german_isins, start_date)
 get_cusips(german_isins, start_date)
