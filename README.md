@@ -8,4 +8,4 @@ Easier and more reliable usage of the Eikon data terminal when querying company 
 3. Run `sample_extraction.py` to retrieve a sample data extract from Eikon.
 4. The results will be stored locally in a subfolder called `data`.
 
-You can imitate the sample functions for custom extractions.
+You can imitate the sample functions for custom extractions. Check there definitions in the `functions.py` script.
