@@ -14,6 +14,17 @@ def get_stock_returns(isins, start_date, freq="D"):
     extractor = EikonDataExtractor(isins, "stock_returns", return_cols, freq[0], block_size=block_size, precision=6)
     return extractor.download_data(start_date)
 
+def get_bond_returns(isins, start_date, freq="D"):
+    """
+        :param isins: list of isins
+        :param freq: "D" (daily) or "Mo" (monthly)
+        :return:
+    """
+    return_cols = ['TR.FiIssuerName', 'TR.IssuerRating', 'TR.IssuerRating.Date', 'TR.FundLaunchDate']
+    block_size = 10 if freq == "D" else 100
+    extractor = EikonDataExtractor(isins, "bond_returns", return_cols, freq[0], block_size=block_size, precision=6)
+    return extractor.download_data(start_date)
+
 
 def get_market_cap_data(isins, start_date):
     market_cap_cols = ["TR.CompanyMarketCap.Date", "TR.CompanyMarketCap"]

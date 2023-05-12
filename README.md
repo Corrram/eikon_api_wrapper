@@ -1,5 +1,5 @@
 # eikon_api_wrapper
-Easier and more reliable usage of the Eikon data terminal when querying company data.
+Easier and more reliable usage of the Eikon data terminal when querying company or bond data.
 The API allows to create tables like in the Eikon Screener APP, but with arbitrary amount of rows and columns.
 
 ## Usage
@@ -10,4 +10,4 @@ More information for getting this Eikon App Key is available [here](https://deve
 3. Run `sample_extraction.py` to retrieve a sample data extract from Eikon.
 4. The results will be stored locally in a subfolder called `data`.
 
-You can imitate the sample functions for custom extractions. Check there definitions in the `functions.py` script.
+You can imitate the sample functions for custom extractions. Check their definitions in the `functions.py` script.

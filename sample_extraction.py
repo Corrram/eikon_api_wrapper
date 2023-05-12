@@ -14,7 +14,10 @@ start_date = "2019-01-01"
 get_stock_returns(sp500_isins, start_date, "D")
 get_market_cap_data(sp500_isins, start_date)
 get_climate_indicators(sp500_isins, start_date)
+
 get_business_sectors(german_isins, start_date)
 get_cusips(german_isins, start_date)
+
+get_bond_returns(["CH0031240127", "XS1614096425", "US099109017"], start_date)
 
 exit()
