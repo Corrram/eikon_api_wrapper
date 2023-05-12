@@ -10,4 +10,10 @@ More information for getting this Eikon App Key is available [here](https://deve
 3. Run `sample_extraction.py` to retrieve a sample data extract from Eikon.
 4. The results will be stored locally in a subfolder called `data`.
 
-You can imitate the sample functions for custom extractions. Check their definitions in the `functions.py` script.
+You can imitate the sample functions for custom extractions. Check their definitions in the `functions.py` script. To find the column names you need for your specific task, you can use the Eikon front end. Just browse for a sample company or bond and find a sample value you are interested in.
+
+![Tux, the Linux mascot](/images/eikon_front_end_pic1.PNG)
+
+Then hover over the question mark to find its API Name, which you can then use in your custom function like in the sample functions.
+
+![Tux, the Linux mascot](/images/eikon_front_end_pic2.PNG)
