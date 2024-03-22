@@ -6,13 +6,22 @@ import math
 import pandas as pd
 import time
 
+# ek.set_log_level(1)
+
 
 class EikonDataExtractor:
 
     eikon_app_key_filename = "eikon_app_key.txt"
 
-    def __init__(self, isins: list, output_subfolder: str, eikon_columns: list, frequency: str = None,
-                 block_size: int = None, precision=None):
+    def __init__(
+        self,
+        isins: list,
+        output_subfolder: str,
+        eikon_columns: list,
+        frequency: str = None,
+        block_size: int = None,
+        precision=None,
+    ):
         """
 
         :param isins: List of company isins to query.
@@ -34,7 +43,7 @@ class EikonDataExtractor:
 
     @classmethod
     def connect(cls):
-        with open(cls.eikon_app_key_filename, mode='r') as file:
+        with open(cls.eikon_app_key_filename, mode="r") as file:
             eikon_app_key = file.read()
         ek.set_app_key(eikon_app_key)
 
@@ -66,7 +75,9 @@ class EikonDataExtractor:
             df.columns = [col.replace(" ", "_") for col in df.columns]
             if "Date" in df:
                 df.Date = df.Date.str[:10]
-                df.sort_values(['Instrument', 'Date'], ascending=[True, True], inplace=True)
+                df.sort_values(
+                    ["Instrument", "Date"], ascending=[True, True], inplace=True
+                )
             print(f"--- {time.time() - start_time} seconds ---")
             pathlib.Path(self.data_path).mkdir(exist_ok=True)
             output_path = f"{self.data_path}{self.output_folder}"
@@ -74,12 +85,25 @@ class EikonDataExtractor:
             df.to_csv(f"{output_path}/extract{i}.csv", index=False)
         return None
 
-    def get_data_chunk(self, firms: List[str], block: int, edate: str = None) -> pd.DataFrame:
+    def get_data_chunk(
+        self, firms: List[str], block: int, edate: str = None
+    ) -> pd.DataFrame:
         while True:
             with contextlib.suppress(ek.eikonError.EikonError):
-                isin_block = firms[self.block_size * block:self.block_size * (block + 1)]
+                isin_block = firms[
+                    self.block_size * block : self.block_size * (block + 1)
+                ]
                 edate = edate if edate is not None else 0
-                conf = {'SDate': 0, 'EDate': edate, 'FRQ': self.frequency, 'Curn': 'USD'}
+                conf = {
+                    "SDate": 0,
+                    "EDate": edate,
+                    "FRQ": self.frequency,
+                    "Curn": "USD",
+                }
                 df, err = ek.get_data(isin_block, self.columns, conf)
                 df = df.drop_duplicates().dropna(how="all")
-                return df.loc[~df[df.columns.difference(["Instrument", "Date"])].isnull().all(axis=1)]
+                return df.loc[
+                    ~df[df.columns.difference(["Instrument", "Date"])]
+                    .isnull()
+                    .all(axis=1)
+                ]
