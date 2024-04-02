@@ -11,7 +11,7 @@ import time
 
 class EikonDataExtractor:
 
-    eikon_app_key_filename = "eikon_app_key.txt"
+    eikon_app_key_filename = "../eikon_app_key.txt"
 
     def __init__(
         self,
@@ -21,6 +21,7 @@ class EikonDataExtractor:
         frequency: str = None,
         block_size: int = None,
         precision=None,
+        key=None,
     ):
         """
 
@@ -39,13 +40,14 @@ class EikonDataExtractor:
         self.block_size = block_size
         self._precision = precision
 
-        self.connect()
+        self.connect(key)
 
     @classmethod
-    def connect(cls):
-        with open(cls.eikon_app_key_filename, mode="r") as file:
-            eikon_app_key = file.read()
-        ek.set_app_key(eikon_app_key)
+    def connect(cls, key=None):
+        if key is None:
+            with open(cls.eikon_app_key_filename, mode="r") as file:
+                key = file.read()
+        ek.set_app_key(key)
 
     def round_df(self, df: pd.DataFrame) -> pd.DataFrame:
         """Rounds data columns returned from Eikon
