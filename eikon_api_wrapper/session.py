@@ -1,6 +1,6 @@
 import eikon as ek
 
-from eikon_data_extractor import EikonDataExtractor
+from eikon_api_wrapper.eikon_data_extractor import EikonDataExtractor
 
 
 class Session:
@@ -62,24 +62,25 @@ class Session:
         )
         return extractor.download_data(self.start_date)
 
-    def get_climate_indicators(self, isins):
-        indicator_cols = [
-            "TR.TRESGScore.Date",
-            "TR.TRESGScore",
-            "TR.TRESGEmissionsScore",
-            "TR.TRESGInnovationScore",
-            "TR.TRESGResourceUseScore",
-            "TR.CO2DirectScope1",
-            "TR.CO2IndirectScope2",
-            "TR.CO2IndirectScope3",
-            "TR.TRESGManagementScore",
-            "TR.TRESGShareholdersScore",
-            "TR.TRESGCSRStrategyScore",
-            "TR.TRESGWorkforceScore",
-            "TR.TRESGHumanRightsScore",
-            "TR.TRESGCommunityScore",
-            "TR.TRESGProductResponsibilityScore",
-        ]
+    def get_climate_indicators(self, isins, indicator_cols=None):
+        if indicator_cols is None:
+            indicator_cols = [
+                "TR.TRESGScore.Date",
+                "TR.TRESGScore",
+                "TR.TRESGEmissionsScore",
+                "TR.TRESGInnovationScore",
+                "TR.TRESGResourceUseScore",
+                "TR.CO2DirectScope1",
+                "TR.CO2IndirectScope2",
+                "TR.CO2IndirectScope3",
+                "TR.TRESGManagementScore",
+                "TR.TRESGShareholdersScore",
+                "TR.TRESGCSRStrategyScore",
+                "TR.TRESGWorkforceScore",
+                "TR.TRESGHumanRightsScore",
+                "TR.TRESGCommunityScore",
+                "TR.TRESGProductResponsibilityScore",
+            ]
         extractor = EikonDataExtractor(
             isins, "indicators", indicator_cols, "FY", block_size=1000, precision=2
         )

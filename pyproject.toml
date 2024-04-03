@@ -2,15 +2,6 @@
 build-backend = "poetry.core.masonry.api"
 requires = ["poetry-core>=1.0.0"]
 
-[project]
-name = "eikon_api_wrapper"
-version = "0.0.3"
-description = "Enables effective and resilient Eikon data extracts."
-authors = ["Marcus Rockel <marcus.rockel@finance.uni-freiburg.de>"]
-license = "MIT"
-readme = "README.md"
-keywords = ["eikon", "api", "wrapper", "data", "extracts"]
-
 [project.urls]
 "Homepage" = "https://github.com/Corrram/eikon_api_wrapper"
 
@@ -18,11 +9,12 @@ keywords = ["eikon", "api", "wrapper", "data", "extracts"]
 
 [tool.poetry]
 name = "eikon_api_wrapper"
-version = "0.0.3"
+version = "0.0.4"
 description = "Enables effective and resilient Eikon data extracts."
 authors = ["Marcus Rockel <marcus.rockel@finance.uni-freiburg.de>"]
 license = "MIT"
 readme = "README.md"
+keywords = ["eikon", "api", "wrapper", "data", "extracts"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
