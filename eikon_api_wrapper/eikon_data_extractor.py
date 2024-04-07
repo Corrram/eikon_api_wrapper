@@ -1,12 +1,15 @@
 import contextlib
 import pathlib
-from typing import List
+import warnings
+import logging
+
 import eikon as ek
 import math
 import pandas as pd
 import time
 
 # ek.set_log_level(1)
+log = logging.getLogger(__name__)
 
 
 class EikonDataExtractor:
@@ -16,6 +19,7 @@ class EikonDataExtractor:
         isins: list,
         output_subfolder: str,
         eikon_columns: list,
+        data_path="data",
         frequency: str = None,
         block_size: int = None,
         precision=None,
@@ -29,7 +33,7 @@ class EikonDataExtractor:
         :param block_size:
         :param precision:
         """
-        self.data_path = "data/"
+        self.data_path = data_path
         self.isins = isins
         self.output_folder = output_subfolder
         self.columns = eikon_columns
@@ -57,8 +61,10 @@ class EikonDataExtractor:
         chunk_no = math.ceil(len(self.isins) / self.block_size)
         for i in range(chunk_no):
             print(f"Iteration {i + 1} of {chunk_no}")
-            df = self.get_data_chunk(self.isins, i, since)
+            df = self.get_data_chunk(i, since)
             if df.shape[0] == 0:
+                if self.block_size == 1:
+                    log.warning(f"No data found for {self.isins[i]}")
                 continue
             if pd.notna(self._precision):
                 df = self.round_df(df)
@@ -70,17 +76,19 @@ class EikonDataExtractor:
                 )
             print(f"--- {time.time() - start_time} seconds ---")
             pathlib.Path(self.data_path).mkdir(exist_ok=True)
-            output_path = f"{self.data_path}{self.output_folder}"
+            output_path = f"{self.data_path}/{self.output_folder}"
             pathlib.Path(output_path).mkdir(exist_ok=True)
-            df.to_csv(f"{output_path}/extract{i}.csv", index=False)
+            if self.block_size == 1:
+                filename = f"{output_path}/{self.isins[i]}.csv"
+            else:
+                filename = f"{output_path}/extract{i}.csv"
+            df.to_csv(filename, index=False)
         return None
 
-    def get_data_chunk(
-        self, firms: List[str], block: int, edate: str = None
-    ) -> pd.DataFrame:
+    def get_data_chunk(self, block: int, edate: str = None) -> pd.DataFrame:
         while True:
             with contextlib.suppress(ek.eikonError.EikonError):
-                isin_block = firms[
+                isin_block = self.isins[
                     self.block_size * block : self.block_size * (block + 1)
                 ]
                 edate = edate if edate is not None else 0
@@ -90,8 +98,10 @@ class EikonDataExtractor:
                     "FRQ": self.frequency,
                     "Curn": "USD",
                 }
-                df, err = ek.get_data(isin_block, self.columns, conf)
-                df = df.drop_duplicates().dropna(how="all")
+                with warnings.catch_warnings():
+                    warnings.simplefilter("ignore")
+                    df, err = ek.get_data(isin_block, self.columns, conf)
+                df = df.drop_duplicates().dropna(subset=df.columns[1:], how="all")
                 return df.loc[
                     ~df[df.columns.difference(["Instrument", "Date"])]
                     .isnull()

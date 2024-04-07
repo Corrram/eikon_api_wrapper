@@ -9,7 +9,7 @@ requires = ["poetry-core>=1.0.0"]
 
 [tool.poetry]
 name = "eikon_api_wrapper"
-version = "0.0.4"
+version = "0.0.5"
 description = "Enables effective and resilient Eikon data extracts."
 authors = ["Marcus Rockel <marcus.rockel@finance.uni-freiburg.de>"]
 license = "MIT"
@@ -20,3 +20,7 @@ keywords = ["eikon", "api", "wrapper", "data", "extracts"]
 python = "^3.9"
 pandas = "^2.2.1"
 eikon = "^1.1.18"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.1"
+
