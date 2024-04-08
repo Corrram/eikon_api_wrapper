@@ -8,7 +8,7 @@ with open("sp500-isin-list.txt", "r") as file:
 with open("eikon_app_key.txt", "r") as file:
     key = file.read().strip()
 
-session = Session(key, start_date="2019-01-01", freq="D")
+session = Session(key, start_date="2019-01-01", freq="1D")
 # fetch company codes for a given country from eikon
 german_companies = session.get_companies_from("DE")
 german_isins = list(german_companies.ISIN)

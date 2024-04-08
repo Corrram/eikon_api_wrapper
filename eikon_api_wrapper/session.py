@@ -5,7 +5,7 @@ from eikon_api_wrapper.eikon_data_extractor import EikonDataExtractor
 
 class Session:
 
-    def __init__(self, key, start_date=None, freq="D", data_path=None, **kwargs):
+    def __init__(self, key, start_date=None, freq="1D", data_path=None, **kwargs):
         ek.set_app_key(key)
         self.start_date = start_date
         self._data_path = data_path
@@ -22,15 +22,36 @@ class Session:
         :return:
         """
         freq = self.freq
-        return_cols = [f"TR.TotalReturn1{freq}.Date", f"TR.TotalReturn1{freq}"]
+        return_cols = [f"TR.TotalReturn{freq}.Date", f"TR.TotalReturn{freq}"]
         if block_size is None:
-            block_size = 10 if freq == "D" else 100
+            block_size = 10 if freq == "1D" else 100
         extractor = EikonDataExtractor(
             isins,
             "stock_returns",
             return_cols,
             self._data_path,
-            freq[0],
+            freq,
+            block_size=block_size,
+            precision=6,
+        )
+        return extractor.download_data(self.start_date)
+
+    def get_stock_volatility(self, isins, block_size=None):
+        """
+        :param isins: list of isins
+        :param freq: "D" (daily) or "Mo" (monthly)
+        :return:
+        """
+        freq = self.freq
+        return_cols = [f"TR.Volatility{freq}.Date", f"TR.Volatility{freq}"]
+        if block_size is None:
+            block_size = 10 if freq == "D" else 100
+        extractor = EikonDataExtractor(
+            isins,
+            "stock_volatility",
+            return_cols,
+            self._data_path,
+            freq,
             block_size=block_size,
             precision=6,
         )
