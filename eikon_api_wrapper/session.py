@@ -5,11 +5,14 @@ from eikon_api_wrapper.eikon_data_extractor import EikonDataExtractor
 
 class Session:
 
-    def __init__(self, key, start_date=None, freq="1D", data_path=None, **kwargs):
+    def __init__(
+        self, key, start_date=None, freq="1D", data_path=None, subfolder=None, **kwargs
+    ):
         ek.set_app_key(key)
         self.start_date = start_date
         self._data_path = data_path
         self.freq = freq
+        self._subfolder = subfolder
         self.__dict__.update(kwargs)
 
     def __call__(self, *args, **kwargs):
@@ -27,7 +30,7 @@ class Session:
             block_size = 10 if freq == "1D" else 100
         extractor = EikonDataExtractor(
             isins,
-            "stock_returns",
+            self._subfolder or "stock_returns",
             return_cols,
             self._data_path,
             freq,
@@ -48,7 +51,7 @@ class Session:
             block_size = 10 if freq == "D" else 100
         extractor = EikonDataExtractor(
             isins,
-            "stock_volatility",
+            self._subfolder or "stock_volatility",
             return_cols,
             self._data_path,
             freq,
@@ -72,7 +75,7 @@ class Session:
             block_size = 10 if self.freq == "D" else 100
         extractor = EikonDataExtractor(
             isins,
-            "bond_returns",
+            self._subfolder or "bond_returns",
             return_cols,
             self._data_path,
             self.freq[0],
@@ -85,7 +88,7 @@ class Session:
         market_cap_cols = ["TR.CompanyMarketCap.Date", "TR.CompanyMarketCap"]
         extractor = EikonDataExtractor(
             isins,
-            "market_cap",
+            self._subfolder or "market_cap",
             market_cap_cols,
             self._data_path,
             "M",
@@ -115,7 +118,7 @@ class Session:
             ]
         extractor = EikonDataExtractor(
             isins,
-            "indicators",
+            self._subfolder or "indicators",
             indicator_cols,
             self._data_path,
             "FY",
@@ -127,7 +130,7 @@ class Session:
     def get_cusips(self, isins):
         extractor = EikonDataExtractor(
             isins,
-            "cusips",
+            self._subfolder or "cusips",
             ["TR.CUSIPExtended"],
             self._data_path,
             frequency="FY",
@@ -145,7 +148,7 @@ class Session:
         ]
         extractor = EikonDataExtractor(
             isins,
-            "trbc",
+            self._subfolder or "trbc",
             industry_sector_cols,
             self._data_path,
             frequency="FY",
