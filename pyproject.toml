@@ -17,10 +17,11 @@ readme = "README.md"
 keywords = ["eikon", "api", "wrapper", "data", "extracts"]
 
 [tool.poetry.dependencies]
-python = "^3.9"
-pandas = "^2.2.1"
-eikon = "^1.1.18"
+python = ">=3.9"
+pandas = "^2.2"
+eikon = "^1.1"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^8.1.1"
+pytest = "^8.1"
+black = "^24.4"
 
