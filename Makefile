@@ -53,3 +53,7 @@ update:
 upgrade-dev:
 	@echo "Upgrading dev dependencies in root package..."
 	$(UV) sync --upgrade --extra dev
+
+format:
+	$(UV) run --active isort .
+	$(UV) run ruff format .

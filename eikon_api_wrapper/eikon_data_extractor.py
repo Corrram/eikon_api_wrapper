@@ -1,19 +1,18 @@
 import contextlib
-import pathlib
-import warnings
 import logging
+import math
+import pathlib
+import time
+import warnings
 
 import eikon as ek
-import math
 import pandas as pd
-import time
 
 # ek.set_log_level(1)
 log = logging.getLogger(__name__)
 
 
 class EikonDataExtractor:
-
     def __init__(
         self,
         isins: list,

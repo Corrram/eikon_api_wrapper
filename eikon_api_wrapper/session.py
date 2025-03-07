@@ -7,7 +7,6 @@ from eikon_api_wrapper.eikon_data_extractor import EikonDataExtractor
 
 
 class Session:
-
     def __init__(
         self, key, start_date=None, freq="1D", data_path=None, subfolder=None, **kwargs
     ):

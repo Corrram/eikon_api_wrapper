@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "eikon_api_wrapper"
-version = "0.1.0"
+version = "0.1.1"
 description = "Enables effective and resilient Eikon data extracts."
 authors = [
     {name = "Marcus Rockel", email = "marcus.rockel@finance.uni-freiburg.de"},
@@ -18,19 +18,14 @@ dependencies = [
     "eikon>=1.1.18",
 ]
 
-[tool.poetry.dependencies]
-python = "^3.9"
-pandas = "^2.2.1"
-eikon = "^1.1.18"
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.1.1"
-
 [tool.setuptools.packages.find]
 where = ["."]
 
 [dependency-groups]
 dev = [
+    "isort>=6.0.1",
+    "pre-commit>=4.1.0",
     "pytest>=8.1.1",
+    "ruff>=0.9.9",
     "twine>=6.1.0",
 ]

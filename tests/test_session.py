@@ -1,8 +1,9 @@
 import unittest
-from unittest.mock import patch, MagicMock, call
-import pytest
-import pandas as pd
 from datetime import datetime
+from unittest.mock import MagicMock, call, patch
+
+import pandas as pd
+import pytest
 
 # Import the module to test
 from eikon_api_wrapper.session import Session, set_app_key
@@ -21,7 +22,9 @@ class TestSession(unittest.TestCase):
     @patch("eikon_api_wrapper.session.ek")
     def test_init(self, mock_ek):
         """Test Session initialization"""
-        session = Session(self.api_key, self.start_date, "D", self.data_path, custom_param="value")
+        session = Session(
+            self.api_key, self.start_date, "D", self.data_path, custom_param="value"
+        )
 
         # Verify ek.set_app_key was called with the right key
         mock_ek.set_app_key.assert_called_once_with(self.api_key)
@@ -62,7 +65,7 @@ class TestSession(unittest.TestCase):
             self.data_path,
             "D",
             block_size=100,
-            precision=6
+            precision=6,
         )
 
         # Verify download_data was called with start_date
@@ -89,7 +92,7 @@ class TestSession(unittest.TestCase):
             self.data_path,
             "Mo",
             block_size=100,
-            precision=6
+            precision=6,
         )
 
         # Verify download_data was called with start_date
@@ -116,7 +119,7 @@ class TestSession(unittest.TestCase):
             self.data_path,
             "D",
             block_size=50,
-            precision=6
+            precision=6,
         )
 
     @patch("eikon_api_wrapper.session.EikonDataExtractor")
@@ -144,7 +147,7 @@ class TestSession(unittest.TestCase):
             self.data_path,
             "D",
             block_size=10,
-            precision=6
+            precision=6,
         )
 
         # Verify download_data was called with start_date
@@ -171,7 +174,7 @@ class TestSession(unittest.TestCase):
             self.data_path,
             "M",
             block_size=200,
-            precision=0
+            precision=0,
         )
 
         # Verify download_data was called with start_date
@@ -215,7 +218,7 @@ class TestSession(unittest.TestCase):
             self.data_path,
             "FY",
             block_size=1000,
-            precision=2
+            precision=2,
         )
 
         # Verify download_data was called with start_date
@@ -245,7 +248,7 @@ class TestSession(unittest.TestCase):
             self.data_path,
             "FY",
             block_size=1000,
-            precision=2
+            precision=2,
         )
 
     @patch("eikon_api_wrapper.session.EikonDataExtractor")
@@ -267,7 +270,7 @@ class TestSession(unittest.TestCase):
             ["TR.CUSIPExtended"],
             self.data_path,
             frequency="FY",
-            block_size=1000
+            block_size=1000,
         )
 
         # Verify download_data was called with start_date
@@ -299,7 +302,7 @@ class TestSession(unittest.TestCase):
             ],
             self.data_path,
             frequency="FY",
-            block_size=1000
+            block_size=1000,
         )
 
         # Verify download_data was called with start_date
@@ -310,13 +313,15 @@ class TestSession(unittest.TestCase):
     def test_get_companies_from(self, mock_ek):
         """Test get_companies_from static method"""
         # Setup mock
-        mock_df = pd.DataFrame({
-            'Instrument': ['AAPL.O', 'MSFT.O'],
-            'ISIN Code': ['US0378331005', 'US5949181045'],
-            'Common Name': ['APPLE INC', 'MICROSOFT CORP'],
-            'Headquarters Country': ['United States', 'United States'],
-            'Company Market Cap': [2000000000000, 1800000000000]
-        })
+        mock_df = pd.DataFrame(
+            {
+                "Instrument": ["AAPL.O", "MSFT.O"],
+                "ISIN Code": ["US0378331005", "US5949181045"],
+                "Common Name": ["APPLE INC", "MICROSOFT CORP"],
+                "Headquarters Country": ["United States", "United States"],
+                "Company Market Cap": [2000000000000, 1800000000000],
+            }
+        )
         mock_ek.get_data.return_value = (mock_df, None)
 
         # Call static method
@@ -325,17 +330,30 @@ class TestSession(unittest.TestCase):
 
         # Verify ek.get_data was called correctly
         u_string = "U(IN(Equity(active,public,primary))/*UNV:Public*/)"
-        expected_screen_string = f'SCREEN({u_string}, IN(TR.HQCountryCode,"{country_code}"), CURN=USD)'
+        expected_screen_string = (
+            f'SCREEN({u_string}, IN(TR.HQCountryCode,"{country_code}"), CURN=USD)'
+        )
         expected_instrument_cols = [
             "TR.ISINCode",
             "TR.CommonName,TR.HeadquartersCountry,TR.CompanyMarketCap",
         ]
-        mock_ek.get_data.assert_called_once_with(expected_screen_string, expected_instrument_cols)
+        mock_ek.get_data.assert_called_once_with(
+            expected_screen_string, expected_instrument_cols
+        )
 
         # Verify result was properly processed
         self.assertIsInstance(result, pd.DataFrame)
-        self.assertEqual(list(result.columns), ['Ticker', 'ISIN', 'Common Name', 'Headquarters Country', 'Company Market Cap'])
-        self.assertEqual(list(result['ISIN']), ['US0378331005', 'US5949181045'])
+        self.assertEqual(
+            list(result.columns),
+            [
+                "Ticker",
+                "ISIN",
+                "Common Name",
+                "Headquarters Country",
+                "Company Market Cap",
+            ],
+        )
+        self.assertEqual(list(result["ISIN"]), ["US0378331005", "US5949181045"])
 
     @patch("eikon_api_wrapper.session.ek")
     def test_set_app_key(self, mock_ek):
