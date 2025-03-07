@@ -18,9 +18,13 @@ dependencies = [
     "eikon>=1.1.18",
 ]
 
-[project.urls]
-"Homepage" = "https://github.com/Corrram/eikon_api_wrapper"
+[tool.poetry.dependencies]
+python = "^3.9"
+pandas = "^2.2.1"
+eikon = "^1.1.18"
 
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.1"
 
 [tool.setuptools.packages.find]
 where = ["."]

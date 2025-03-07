@@ -58,10 +58,10 @@ class TestSession(unittest.TestCase):
         mock_extractor_class.assert_called_once_with(
             self.test_isins,
             "stock_returns",
-            ["TR.TotalReturn1D.Date", "TR.TotalReturn1D"],
+            ["TR.TotalReturnD.Date", "TR.TotalReturnD"],
             self.data_path,
             "D",
-            block_size=10,
+            block_size=100,
             precision=6
         )
 
@@ -85,9 +85,9 @@ class TestSession(unittest.TestCase):
         mock_extractor_class.assert_called_once_with(
             self.test_isins,
             "stock_returns",
-            ["TR.TotalReturn1Mo.Date", "TR.TotalReturn1Mo"],
+            ["TR.TotalReturnMo.Date", "TR.TotalReturnMo"],
             self.data_path,
-            "M",
+            "Mo",
             block_size=100,
             precision=6
         )
@@ -112,7 +112,7 @@ class TestSession(unittest.TestCase):
         mock_extractor_class.assert_called_once_with(
             self.test_isins,
             "stock_returns",
-            ["TR.TotalReturn1D.Date", "TR.TotalReturn1D"],
+            ["TR.TotalReturnD.Date", "TR.TotalReturnD"],
             self.data_path,
             "D",
             block_size=50,

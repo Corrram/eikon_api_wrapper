@@ -85,17 +85,17 @@ class EikonDataExtractor:
             df.to_csv(filename, index=False)
         return None
 
-    def get_data_chunk(self, block: int, edate: str = None) -> pd.DataFrame:
+    def get_data_chunk(self, block: int, sdate: str = None) -> pd.DataFrame:
         while True:
             with contextlib.suppress(ek.eikonError.EikonError):
                 isin_block = self.isins[
                     self.block_size * block : self.block_size * (block + 1)
                 ]
-                edate = edate if edate is not None else 0
+                sdate = sdate if sdate is not None else 0
                 conf = {
-                    "SDate": 0,
-                    "EDate": edate,
-                    "FRQ": self.frequency,
+                    "SDate": sdate,
+                    "EDate": 0,
+                    "FRQ": self.frequency[-1],
                     "Curn": "USD",
                 }
                 with warnings.catch_warnings():

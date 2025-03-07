@@ -104,16 +104,16 @@ class TestEikonDataExtractor:
         assert not result.empty
 
     @patch('eikon_api_wrapper.eikon_data_extractor.ek')
-    def test_get_data_chunk_with_edate(self, mock_ek, extractor, mock_eikon_data):
+    def test_get_data_chunk_with_sdate(self, mock_ek, extractor, mock_eikon_data):
         """Test the get_data_chunk method with a custom end date"""
         mock_ek.get_data.return_value = (mock_eikon_data, None)
 
-        result = extractor.get_data_chunk(0, edate="2023-12-31")
+        result = extractor.get_data_chunk(0, sdate="2023-12-31")
 
         mock_ek.get_data.assert_called_once_with(
             extractor.isins[0:2],
             extractor.columns,
-            {'SDate': 0, 'EDate': "2023-12-31", 'FRQ': 'D', 'Curn': 'USD'}
+            {'SDate': "2023-12-31", 'EDate': 0, 'FRQ': 'D', 'Curn': 'USD'}
         )
 
     @patch('eikon_api_wrapper.eikon_data_extractor.ek')
