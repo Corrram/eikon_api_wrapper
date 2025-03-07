@@ -1,4 +1,7 @@
+from typing import Any
+
 import eikon as ek
+import pandas as pd
 
 from eikon_api_wrapper.eikon_data_extractor import EikonDataExtractor
 
@@ -132,7 +135,8 @@ class Session:
         )
         return extractor.download_data(self.start_date)
 
-    def get_companies_from(self, country_code):
+    @staticmethod
+    def get_companies_from(country_code: str) -> pd.DataFrame:
         u_string = "U(IN(Equity(active,public,primary))/*UNV:Public*/)"
         screen_string = (
             f'SCREEN({u_string}, IN(TR.HQCountryCode,"{country_code}"), CURN=USD)'
@@ -141,7 +145,6 @@ class Session:
             "TR.ISINCode",
             "TR.CommonName,TR.HeadquartersCountry,TR.CompanyMarketCap",
         ]
-        set_app_key("8682ab5b1f6b4832a1870ddefe5d1108b859562e")
         df, _ = ek.get_data(screen_string, instrument_cols)
         cleansed_df = df.drop_duplicates().dropna(how="all")
         return cleansed_df.rename(columns={"ISIN Code": "ISIN", "Instrument": "Ticker"})

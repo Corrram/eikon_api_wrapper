@@ -5,3 +5,4 @@ __pycache__/
 /dist/
 /build/
 /eikon_api_wrapper.egg-info/
+/.venv/

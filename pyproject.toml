@@ -1,26 +1,32 @@
 [build-system]
-build-backend = "poetry.core.masonry.api"
-requires = ["poetry-core>=1.0.0"]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eikon_api_wrapper"
+version = "0.1.0"
+description = "Enables effective and resilient Eikon data extracts."
+authors = [
+    {name = "Marcus Rockel", email = "marcus.rockel@finance.uni-freiburg.de"},
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.9"
+keywords = ["eikon", "api", "wrapper", "data", "extracts"]
+dependencies = [
+    "pandas>=2.2.1",
+    "eikon>=1.1.18",
+]
 
 [project.urls]
 "Homepage" = "https://github.com/Corrram/eikon_api_wrapper"
 
-[tool]
 
-[tool.poetry]
-name = "eikon_api_wrapper"
-version = "0.0.5"
-description = "Enables effective and resilient Eikon data extracts."
-authors = ["Marcus Rockel <marcus.rockel@finance.uni-freiburg.de>"]
-license = "MIT"
-readme = "README.md"
-keywords = ["eikon", "api", "wrapper", "data", "extracts"]
+[tool.setuptools.packages.find]
+where = ["."]
 
-[tool.poetry.dependencies]
-python = "^3.9"
-pandas = "^2.2.1"
-eikon = "^1.1.18"
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.1.1"
-
+[dependency-groups]
+dev = [
+    "pytest>=8.1.1",
+    "twine>=6.1.0",
+]
